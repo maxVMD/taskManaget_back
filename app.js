@@ -8,6 +8,7 @@ const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
 const projectsService = require('./routes/projects');
+const noteService = require('./services/note.service');
 const bodyParser = require('body-parser');
 const app = express();
 const jsonParser = bodyParser.json();
@@ -38,6 +39,38 @@ app.post('/api/login', jsonParser, (request, response) => {
     }
 
 });
+
+// CRUD Note
+app.get('/api/users/:username/notes', (request, response) => {
+    let username = request.params['username'];
+    const notes = noteService.getUsersNotes(username);
+    if (notes === 404) {
+        response.sendStatus(404);
+    } else {
+        response.json(notes);
+    }
+});
+
+app.post('/api/users/:username/notes', (request, response) => {
+    let username = request.params['username'];
+    const resp = noteService.addNote(username, request.body);
+    response.sendStatus(resp);
+});
+
+app.put('/api/users/:username/notes/:id', (request, response) => {
+    let username = request.params['username'];
+    let idNote = request.params['id'];
+    const resp = noteService.updateNote(username, idNote, request.body);
+    response.sendStatus(resp);
+});
+
+app.delete('/api/users/:username/notes/:id', (request, response) => {
+    let username = request.params['username'];
+    let idNote = request.params['id'];
+    const resp = noteService.deleteNote(username, idNote);
+    response.sendStatus(resp);
+});
+
 
 // CRUD projects
 app.get('/api/users/:username/projects', (request, response) => {

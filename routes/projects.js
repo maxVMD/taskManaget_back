@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const Project = require('../models/projects');
 const Task = require('../models/task');
-var fs = require('fs');
+const fs = require('fs');
 let DB;
 
 const ProjectsService = {
@@ -72,15 +72,10 @@ function deleteProjectById(userName, id) {
     const projects = db.find(user => user.name === userName).projects;
     const index = projects.findIndex(project => project.id === +id);
 
-    if (index === -1) {
-        return 404;
-    }
+    if (index === -1) return 404;
 
-    if (index > 0) {
-        projects.splice(index, 1);
-    } else if (index === 0) {
-        projects.shift();
-    }
+    projects.splice(index, 1);
+
     fs.writeFileSync('./taskDB.json', JSON.stringify(db));
     return 200;
 }
