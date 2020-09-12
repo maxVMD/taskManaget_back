@@ -1,13 +1,12 @@
 
 # Task Manager API
-
-#  
-# Авторизация  GET/ URL: localhost:3000/api/login
+ 
+### Авторизация  GET/ URL: localhost:3000/api/login
     response:  200
       `добро пожаловать Max`
       error 400
-#
-# Получить все Заметки по имкени пользователя GET/ URL: localhost:3000/api/users/:username/notes 
+
+### Получить все Заметки по имкени пользователя GET/ URL: localhost:3000/api/users/:username/notes 
     username  = имя ПОльзователя из поля name 
     response:  Array<Note>
          [
@@ -39,13 +38,49 @@
             public executionDate: string,       - плановая дата исполнения заметки (опционально)
             ) {};
         }
-#
-#
-#
-#
-#
-#
-# Получить все проекты по имени пользователя GET/ URL: localhost:3000/api/users/:username/projects 
+
+### Добавление заметки POST/ URL: localhost:3000/api/users/:username/notes
+    username  = имя ПОльзователя из поля name 
+    bosy: Note
+        {
+          "name": "Новый проектс",     -Обязательное поле
+          "description": "Описание",     
+          "isPriority": false,      
+          "executionDate": "",      
+        }
+
+    response:  200 / 400 Ошибка
+              
+    model:
+         class Note {
+            constructor(
+            public id: number, 
+            public name: string,                - название заметки
+            public createDate: string,          - дата создания заметки
+            public description: string,         - описание заметки
+            public isPriority: boollean,        - приоритетность заметки
+            public executionDate: string,       - плановая дата исполнения заметки (опционально)
+            ) {};
+        }
+
+### Редактировать заметку PUT/ URL: localhost:3000/api/users/:username/notes/:id
+    username  = имя ПОльзователя из поля name 
+    id - id заметки
+    bosy: Note
+            {
+              "name": "Новый проектс",     -Обязательное поле
+              "description": "Описание",     
+              "isPriority": false,      
+              "executionDate": "",      
+            }
+
+    response:  200 / 400 Ошибка
+    model: class Note
+### Удаление заметки DELETE/ URL: localhost:3000/api/users/:username/notes/:id
+    username  = имя ПОльзователя из поля name 
+    id - id заметки
+    response:  200 / 400 Ошибка
+### Получить все проекты по имени пользователя GET/ URL: localhost:3000/api/users/:username/projects 
     username  = имя ПОльзователя из поля name 
     response:  Array<Project>
           [
@@ -79,8 +114,8 @@
             public tasks: Arrays<Task>
             ) {};
         }
-#
-# Создать новый проект POST/ URL: localhost:3000/api/users/:username/projects 
+### Создать новый проект POST/ URL: localhost:3000/api/users/:username/projects 
+    username  = имя ПОльзователя из поля name 
     bosy: Project
         {
           "name": "Новый проектс",     -Обязательное поле
@@ -106,5 +141,4 @@
             ) {};
         }
 #
-#
-#
+
