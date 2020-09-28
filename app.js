@@ -5,6 +5,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const projectsService = require('./routes/projects');
@@ -21,25 +22,17 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
-app.use(function (req, res, next) {
-
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader("Access-Control-Allow-Methods", "*");
-    res.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
-    // Request methods you wish to allow
-    // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-    // Request headers you wish to allow
-    // res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    // res.setHeader('Access-Control-Allow-Credentials', true);
-
-    // Pass to next layer of middleware
-    next();
-});
+app.use(cors());
 
 app.use('/', indexRouter);
+
+// app.use(function (req, res, next) {
+//
+//     res.setHeader('Access-Control-Allow-Origin', '*');
+//     res.setHeader("Access-Control-Allow-Methods", "*");
+//     res.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
+//     next();
+// });
 
 
 app.post('/api/login', jsonParser, (request, response) => {
@@ -62,31 +55,28 @@ app.post('/api/login', jsonParser, (request, response) => {
 app.get('/api/users/:username/notes', (request, response) => {
     let username = request.params['username'];
     const notes = noteService.getUsersNotes(username);
-    if (notes === 404) {
-        response.sendStatus(404);
-    } else {
-        response.json(notes);
-    }
+    response.json(resp);
 });
 
 app.post('/api/users/:username/notes', (request, response) => {
     let username = request.params['username'];
     const resp = noteService.addNote(username, request.body);
-    response.sendStatus(resp);
+    response.json(resp);
+
 });
 
 app.put('/api/users/:username/notes/:id', (request, response) => {
     let username = request.params['username'];
     let idNote = request.params['id'];
     const resp = noteService.updateNote(username, idNote, request.body);
-    response.sendStatus(resp);
+    response.json(resp);
 });
 
 app.delete('/api/users/:username/notes/:id', (request, response) => {
     let username = request.params['username'];
     let idNote = request.params['id'];
     const resp = noteService.deleteNote(username, idNote);
-    response.sendStatus(resp);
+    response.json(resp);
 });
 
 
@@ -121,7 +111,7 @@ app.delete('/api/users/:username/projects/:id', jsonParser, (request, response) 
     let username = request.params['username'];
     let idProject = request.params['id'];
     const resp = projectsService.deleteProjectById(username, idProject);
-    response.sendStatus(resp);
+    response.json(resp);
 });
 
 

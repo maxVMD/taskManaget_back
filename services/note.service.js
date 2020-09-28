@@ -27,7 +27,7 @@ class NoteService {
             user.notes = [];
             user.notes.push(newNote);
             this.saveDB(db);
-            return 200;
+            return newNote;
         } else {
             user.notes.unshift(newNote);
             this.saveDB(db);
@@ -49,7 +49,7 @@ class NoteService {
         updatedNote.executionDate = note.executionDate;
         updatedNote.isPriority = note.isPriority;
         this.saveDB(db);
-        return 200;
+        return newNote;
     }
 
     deleteNote(username, id){
