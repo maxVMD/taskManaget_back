@@ -49,7 +49,7 @@ class NoteService {
         updatedNote.executionDate = note.executionDate;
         updatedNote.isPriority = note.isPriority;
         this.saveDB(db);
-        return newNote;
+        return updatedNote;
     }
 
     deleteNote(username, id){

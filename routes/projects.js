@@ -18,11 +18,10 @@ const ProjectsService = {
 };
 
 
-function getUserByName(collection, userName) {
+function getUserByName(userName) {
     const db = JSON.parse(fs.readFileSync('./taskDB.json', 'utf8'));
-    console.log('db', db)
-
     if (db) {
+        console.log('username', userName)
         return db.find(user => user && user.name === userName);
     } else {
         return null;

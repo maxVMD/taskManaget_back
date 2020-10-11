@@ -26,27 +26,19 @@ app.use(cors());
 
 app.use('/', indexRouter);
 
-// app.use(function (req, res, next) {
-//
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-//     res.setHeader("Access-Control-Allow-Methods", "*");
-//     res.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
-//     next();
-// });
-
-
 app.post('/api/login', jsonParser, (request, response) => {
     if (!request.body) return response.sendStatus(400);
+
     const user = projectsService.getUserByName(request.body.name);
 
     if (user) {
-        response.send(`добро пожаловать ${user.name}`);
+        response.json(`добро пожаловать ${user.name}`);
     } else {
         if (request.body && !request.body.name) {
             return response.sendStatus(400);
         }
         projectsService.saveUser(new User(request.body.name, request.body.age, request.body.login, request.body.email, request.body.password));
-        response.send(`Новый пользователь ${request.body.name}`);
+        response.json(`Новый пользователь ${request.body.name}`);
     }
 
 });
@@ -55,7 +47,7 @@ app.post('/api/login', jsonParser, (request, response) => {
 app.get('/api/users/:username/notes', (request, response) => {
     let username = request.params['username'];
     const notes = noteService.getUsersNotes(username);
-    response.json(resp);
+    response.json(notes);
 });
 
 app.post('/api/users/:username/notes', (request, response) => {
